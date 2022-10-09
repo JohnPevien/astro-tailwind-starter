@@ -1,12 +1,4 @@
-# Astro Starter Kit: Minimal
-
-```
-npm create astro@latest -- --template minimal
-```
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+# Astro Tailwind Starter
 
 ## 🚀 Project Structure
 
@@ -16,6 +8,10 @@ Inside of your Astro project, you'll see the following folders and files:
 /
 ├── public/
 ├── src/
+│   └── components/
+│   └── blocks/
+│       └── navigation.astro
+│       └── layout.astro
 │   └── pages/
 │       └── index.astro
 └── package.json
