@@ -1,4 +1,5 @@
 # Astro Tailwind Starter
+Astro with tailwind and primary blocks (nav, layout, footer)
 
 ## 🚀 Project Structure
 
