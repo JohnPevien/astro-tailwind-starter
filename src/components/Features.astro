@@ -1,0 +1,72 @@
+---
+import FeatureCard from "./FeatureCard.astro";
+
+const features = [
+  {
+    icon: "🚀",
+    title: "Blazing Fast",
+    description:
+      "Astro renders to static HTML, removing heavy JavaScript from your production build.",
+  },
+  {
+    icon: "🎨",
+    title: "Tailwind CSS",
+    description:
+      "Utility-first CSS framework for rapidly building custom user interfaces.",
+  },
+  {
+    icon: "🌙",
+    title: "Dark Mode",
+    description:
+      "Built-in dark mode support for a comfortable viewing experience in any light.",
+  },
+  {
+    icon: "♿",
+    title: "Accessibility",
+    description:
+      "Built with accessibility in mind to ensure your site is usable by everyone.",
+  },
+  {
+    icon: "📱",
+    title: "Responsive",
+    description:
+      "Fully responsive design that looks great on all devices, from mobile to desktop.",
+  },
+  {
+    icon: "🔧",
+    title: "Developer Experience",
+    description:
+      "Enjoy a modern development experience with TypeScript and hot module replacement.",
+  },
+];
+---
+
+<section class="py-16 bg-gray-50 dark:bg-gray-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h2
+        class="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl"
+      >
+        Features
+      </h2>
+      <p
+        class="mt-4 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-400"
+      >
+        Everything you need to build modern, beautiful, and performant websites.
+      </p>
+    </div>
+    <div class="mt-16">
+      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          features.map((feature) => (
+            <FeatureCard
+              icon={feature.icon}
+              title={feature.title}
+              description={feature.description}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,7 +1,36 @@
 ---
-import Layout from '@/blocks/layout.astro';
+import Layout from "@/blocks/layout.astro";
+import Hero from "@/components/Hero.astro";
+import Features from "@/components/Features.astro";
+import Button from "@/components/Button.astro";
 ---
 
 <Layout title="Home">
-	<h1>Astro</h1>
+  <Hero />
+  <Features />
+  <section class="py-16 bg-white dark:bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2
+        class="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl"
+      >
+        Ready to Get Started?
+      </h2>
+      <p
+        class="mt-4 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-400"
+      >
+        Join thousands of developers building amazing websites with Astro and
+        Tailwind CSS.
+      </p>
+      <div class="mt-10">
+        <Button
+          href="#"
+          variant="primary"
+          size="lg"
+          ariaLabel="Get started with Astro"
+        >
+          Get Started
+        </Button>
+      </div>
+    </div>
+  </section>
 </Layout>

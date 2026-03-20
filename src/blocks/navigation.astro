@@ -1,34 +1,214 @@
 ---
+// Constants for navigation items and ARIA labels
+const NAVIGATION_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/blog", label: "Blog" },
+];
+
+const ARIA_LABELS = {
+  logo: "Company Logo",
+  mainNavigation: "Main Navigation",
+  mobileMenuToggle: "Toggle mobile menu",
+  darkModeToggle: "Toggle dark mode",
+} as const;
 ---
-<nav class=" bg-white w-full flex relative justify-between items-center mx-auto px-8 h-20">
-    <div class="inline-flex">
-        <a class="" href="/"
-            ><div class="hidden md:block">
-                <!-- desktop logo -->
-               <p class="text-2xl font-bold">Logo here</p>
-            </div>
-            <div class="block md:hidden">
-                <!-- mobile logo / hamburger -->
-                <p class="text-md font-semibold">Mobile logo</p>
 
-            </div>
-        </a>
-    </div>
+<script define:vars={{ ARIA_LABELS }}>
+  // Dark mode functionality
+  const isDarkMode = () => localStorage.getItem("darkMode") === "true";
+  const setDarkMode = (enable) => {
+    if (enable) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    localStorage.setItem("darkMode", enable.toString());
+  };
 
-    <div class="hidden sm:block flex-shrink flex-grow-0 justify-start px-2">
-        <p class="text-1xl">
-            <!-- optional center nav or logo -->
-            Optional center area
+  // Initialize dark mode from localStorage or system preference
+  const initializeDarkMode = () => {
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    const darkMode = isDarkMode() ?? prefersDark;
+    setDarkMode(darkMode);
+  };
+
+  // Mobile menu functionality
+  let isMobileMenuOpen = false;
+
+  const toggleMobileMenu = () => {
+    isMobileMenuOpen = !isMobileMenuOpen;
+    const mobileMenu = document.getElementById("mobile-menu");
+    const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
+    const hamburgerIcon = mobileMenuToggle?.querySelector(".hamburger-icon");
+    const closeIcon = mobileMenuToggle?.querySelector(".close-icon");
+
+    if (mobileMenu) {
+      mobileMenu.classList.toggle("hidden", !isMobileMenuOpen);
+    }
+    if (hamburgerIcon) {
+      hamburgerIcon.classList.toggle("hidden", isMobileMenuOpen);
+    }
+    if (closeIcon) {
+      closeIcon.classList.toggle("hidden", !isMobileMenuOpen);
+    }
+    if (mobileMenuToggle) {
+      mobileMenuToggle.setAttribute(
+        "aria-expanded",
+        isMobileMenuOpen.toString()
+      );
+    }
+  };
+
+  // Initialize on DOM load
+  document.addEventListener("DOMContentLoaded", () => {
+    initializeDarkMode();
+    const darkModeToggle = document.getElementById("dark-mode-toggle");
+    if (darkModeToggle) {
+      darkModeToggle.addEventListener("click", () => {
+        const currentDarkMode = isDarkMode();
+        setDarkMode(!currentDarkMode);
+      });
+    }
+
+    const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
+    if (mobileMenuToggle) {
+      mobileMenuToggle.addEventListener("click", toggleMobileMenu);
+    }
+  });
+</script>
+
+<nav
+  class="bg-white dark:bg-gray-900 w-full flex relative justify-between items-center mx-auto px-4 sm:px-6 lg:px-8 h-16 md:h-20 transition-colors duration-300"
+  aria-label={ARIA_LABELS.mainNavigation}
+>
+  <!-- Logo -->
+  <div class="inline-flex">
+    <a class="" href="/" aria-label={ARIA_LABELS.logo}>
+      <div class="hidden md:block">
+        <p class="text-2xl font-bold text-gray-900 dark:text-white">
+          Logo here
         </p>
-    </div>
+      </div>
+      <div class="block md:hidden">
+        <p class="text-md font-semibold text-gray-900 dark:text-white">
+          Mobile logo
+        </p>
+      </div>
+    </a>
+  </div>
 
-    <div class="flex-initial">
-        <!-- Change navigation -->
-       <ul class="flex flex-row gap-5">
-        <li><a>Home</a></li>
-        <li><a>About</a></li>
-        <li><a>Blog</a></li>
-       </ul>
-      
-    </div>
+  <!-- Desktop Navigation Links -->
+  <div class="hidden sm:flex flex-shrink flex-grow-0 justify-start px-2">
+    <ul class="flex flex-row gap-5">
+      {
+        NAVIGATION_LINKS.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-colors duration-200"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <!-- Right side items: Dark mode toggle and mobile menu button -->
+  <div class="flex-initial flex items-center space-x-4">
+    <!-- Dark mode toggle button -->
+    <button
+      id="dark-mode-toggle"
+      class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-200 dark:focus:ring-gray-700 transition-colors duration-200"
+      aria-label={ARIA_LABELS.darkModeToggle}
+    >
+      <!-- Sun icon for light mode -->
+      <svg
+        class="hidden dark:block w-5 h-5"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+          clip-rule="evenodd"></path>
+      </svg>
+      <!-- Moon icon for dark mode -->
+      <svg
+        class="block dark:hidden w-5 h-5"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+        ></path>
+      </svg>
+    </button>
+
+    <!-- Mobile menu button -->
+    <button
+      id="mobile-menu-toggle"
+      type="button"
+      class="sm:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-200 dark:focus:ring-gray-700 transition-colors duration-200"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      aria-label={ARIA_LABELS.mobileMenuToggle}
+    >
+      <!-- Hamburger icon when closed -->
+      <svg
+        class="hamburger-icon h-6 w-6"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+      <!-- X icon when open -->
+      <svg
+        class="close-icon hidden h-6 w-6"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+  </div>
 </nav>
+
+<!-- Mobile menu, show/hide based on menu state. -->
+<div
+  id="mobile-menu"
+  class="hidden sm:hidden absolute top-16 left-0 right-0 bg-white dark:bg-gray-900 shadow-lg z-10 transition-all duration-300 ease-in-out transform origin-top"
+>
+  <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+    {
+      NAVIGATION_LINKS.map((link) => (
+        <a
+          href={link.href}
+          class="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+        >
+          {link.label}
+        </a>
+      ))
+    }
+  </div>
+</div>

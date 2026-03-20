@@ -1,0 +1,95 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  keywords?: string;
+  author?: string;
+  imageUrl?: string;
+  url?: string;
+  type?: string;
+  siteName?: string;
+  twitterHandle?: string;
+  noIndex?: boolean;
+  noFollow?: boolean;
+  canonicalUrl?: string;
+  structuredData?: object;
+}
+
+const {
+  title = "Astro Starter",
+  description = "A modern web application built with Astro and Tailwind CSS.",
+  keywords = "Astro, Tailwind CSS, Starter Template",
+  author = "Your Name",
+  imageUrl = new URL("/favicon.svg", Astro.site).href,
+  url = Astro.url.href,
+  type = "website",
+  siteName = "Astro Starter",
+  twitterHandle = "@yourtwitterhandle",
+  noIndex = false,
+  noFollow = false,
+  canonicalUrl = Astro.url.href,
+  structuredData = {},
+} = Astro.props as Props;
+
+const robotsContent = `${noIndex ? "noindex" : "index"},${noFollow ? "nofollow" : "follow"}`;
+
+const defaultStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: title,
+  description: description,
+  url: canonicalUrl,
+  author: {
+    "@type": "Person",
+    name: author,
+  },
+  ...structuredData,
+};
+---
+
+<!-- Basic Meta Tags -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- SEO Meta Tags -->
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="keywords" content={keywords} />
+<meta name="author" content={author} />
+<link rel="canonical" href={canonicalUrl} />
+<meta name="robots" content={robotsContent} />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" href="/favicon.svg" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:site_name" content={siteName} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={imageUrl} />
+<meta name="twitter:creator" content={twitterHandle} />
+
+<!-- Theme Color for Mobile Browsers -->
+<meta name="theme-color" content="#ffffff" />
+<meta name="msapplication-TileColor" content="#ffffff" />
+
+<!-- Dark Mode Support -->
+<meta name="color-scheme" content="light dark" />
+
+<!-- JSON-LD Structured Data -->
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(defaultStructuredData)}
+/>

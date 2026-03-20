@@ -1,29 +1,65 @@
 ---
 interface Props {
   title: string;
+  description?: string;
+  keywords?: string;
+  author?: string;
+  imageUrl?: string;
+  url?: string;
+  type?: string;
+  siteName?: string;
+  twitterHandle?: string;
+  noIndex?: boolean;
+  noFollow?: boolean;
+  canonicalUrl?: string;
+  structuredData?: object;
 }
-import Navigation from '@/blocks/navigation.astro';
+import Navigation from "@/blocks/navigation.astro";
+import Footer from "@/blocks/footer.astro";
+import Head from "@/components/Head.astro";
+import "../styles/global.css";
 
-const {title} = Astro.props as Props;
+const {
+  title,
+  description,
+  keywords,
+  author,
+  imageUrl,
+  url,
+  type,
+  siteName,
+  twitterHandle,
+  noIndex,
+  noFollow,
+  canonicalUrl,
+  structuredData,
+} = Astro.props as Props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-	<meta name="generator" content={Astro.generator} />
-  <title>{title}</title>
-</head>
-<body>
-
-  <Navigation />
-<main class="container mx-auto">
-  <slot/>
-</main>
-  
-</body>
+  <head>
+    <Head
+      title={title}
+      description={description}
+      keywords={keywords}
+      author={author}
+      imageUrl={imageUrl}
+      url={url}
+      type={type}
+      siteName={siteName}
+      twitterHandle={twitterHandle}
+      noIndex={noIndex}
+      noFollow={noFollow}
+      canonicalUrl={canonicalUrl}
+      structuredData={structuredData}
+    />
+  </head>
+  <body>
+    <Navigation />
+    <main class="container mx-auto px-4 py-8">
+      <slot />
+    </main>
+    <Footer />
+  </body>
 </html>
-
